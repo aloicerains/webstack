@@ -1,13 +1,13 @@
-const Image = require('../models/image');
+const House = require('../models/house');
 
-exports.getImages = (req, res, next) => {
+exports.getHouses = (req, res, next) => {
   const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
-  const imageQuery = Image.find();
-  let fetchedImages;
+  const houseQuery = House.find();
+  let fetchedHouses;
 
   if (pageSize && currentPage) {
-    imageQuery
+    houseQuery
       .sort({ createdAt: 1 })
 
       .skip(pageSize * (currentPage - 1))
@@ -15,34 +15,34 @@ exports.getImages = (req, res, next) => {
       .limit(pageSize);
   }
 
-  imageQuery
+  houseQuery
     .then(documents => {
-      fetchedImages = documents;
-      return Image.countDocuments();
+      fetchedHouses = documents;
+      return House.countDocuments();
     })
 
     .then(count => {
-      res.status(200).json(fetchedImages);
+      res.status(200).json(fetchedHouses);
     })
 
     .catch(error => {
       res.status(500).json({
-        message: 'Fetching image failed!',
+        message: 'Fetching house failed!',
         status: false
       });
     });
 };
 
-exports.getImage = (req, res, next) => {
-  Image
+exports.getHouse = (req, res, next) => {
+  House
     .findById(req.params.id)
 
-    .then(image => {
-      if (image) {
-        res.status(200).json(image);
+    .then(house => {
+      if (house) {
+        res.status(200).json(house);
       } else {
         res.status(404).json({
-          message: 'Image does not exist',
+          message: 'House does not exist',
           status: false
         });
       }
@@ -50,31 +50,31 @@ exports.getImage = (req, res, next) => {
 
     .catch(error => {
       res.status(500).json({
-        message: 'Fetching image failed!',
+        message: 'Fetching house failed!',
         status: false
       });
     });
 };
 
-exports.getImagesByHouseId = (req, res, next) => {
+exports.getHousesByOwnerId = (req, res, next) => {
   const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
 
-  const imagesQuery = Image
+  const housesQuery = House
     .aggregate()
 
     .lookup({
-      from: 'images',
-      localField: 'houseId',
+      from: 'users',
+      localField: 'creator',
       foreignField: '_id',
-      as: 'houseDetails'
+      as: 'userDetails'
     })
     .match({ creator: new mongoose.Types.ObjectId(req.params.id) });;
 
-  let fetchedImages;
+  let fetchedHouses;
 
   if (pageSize && currentPage) {
-    imagesQuery
+    housesQuery
       .sort({ createdAt: 1 })
 
       .skip(pageSize * (currentPage - 1))
@@ -82,77 +82,88 @@ exports.getImagesByHouseId = (req, res, next) => {
       .limit(pageSize);
   }
 
-  imagesQuery
+  housesQuery
     .then(documents => {
-      fetchedImages = documents;
+      fetchedHouses = documents;
 
-      fetchedImages.map(fetchedImage => {
-        fetchedHouseDetails = fetchedImage.houseDetails[0]
+      fetchedHouses.map(fetchedHouse => {
+        fetchedUserDetails = fetchedHouse.userDetails[0]
+
+        fetchedHouse.userDetails = {
+          "_id": fetchedUserDetails._id,
+          "firstName": fetchedUserDetails.firstName,
+          "lastName": fetchedUserDetails.lastName,
+          "phone": fetchedUserDetails.phone,
+          "email": fetchedUserDetails.email,
+          "userType": fetchedUserDetails.userType,
+          "token": "",
+          "createdAt": fetchedUserDetails.createdAt,
+          "updatedAt": fetchedUserDetails.updatedAt
       }
-        return fetchedImage
+        return fetchedHouse
       });
 
-      return Image.countDocuments();
+      return House.countDocuments();
     })
 
     .then(count => {
       res.status(200).json(
-        fetchedImages
+        fetchedHouses
       );
     })
 
     .catch(error => {
       console.log(error)
       res.status(500).json({
-        message: 'Fetching owner images failed!',
+        message: 'Fetching owner houses failed!',
         status: false
       });
     });
 };
 
-exports.createImage = (req, res) => {
+exports.createHouse = (req, res) => {
   if (req.body === {}) {
     res.status(400).json({
       message: 'Bad request',
       status: false
     });
   }
-  const url = req.protocol + '://' + req.get('host');
-  const image = new Image({
-    houseId: req.body.houseId,
-    imageDescription: req.body.imageDescription,
-    imageUrl: url + '/images/' + req.file.filename
+
+  const house = new House({
+    creator: req.body.creator,
+    houseName: req.body.houseName,
+    houseType: req.body.houseType,
+    houseDescription: req.body.houseDescription,
+    contactPhone: req.body.contactPhone,
+    contactEmail: req.body.contactEmail,
+    locationLat: req.body.locationLat,
+    locationLong: req.body.locationLong,
   });
 
 
-  image
+  house
     .save()
 
-    .then(createdImage => {
+    .then(createdHouse => {
       res.status(201).json({
-        message: 'image added successfully',
+        message: 'house added successfully',
         status: true
       });
     })
 
     .catch(error => {
       res.status(500).json({
-        message: 'creating an image failed!',
+        message: 'creating a house failed!',
         status: false
       });
     });
 };
 
-exports.updateImage = (req, res, next) => {
+exports.updateHouse = (req, res, next) => {
   const updateData = req.body;
   updateData._id = req.params.id;
 
-  if (req.file) {
-    const url = req.protocol + '://' + req.get('host');
-    updateData.imageUrl = url + '/images/' + req.file.filename;
-  }
-
-  Image
+  House
     .updateOne(
       {
         _id: req.params.id,
@@ -176,14 +187,14 @@ exports.updateImage = (req, res, next) => {
 
     .catch(error => {
       res.status(500).json({
-        message: "Couldn't update image!",
+        message: "Couldn't update house!",
         status: false
       });
     });
 };
 
-exports.deleteImage = (req, res, next) => {
-  Image
+exports.deleteHouse = (req, res, next) => {
+  House
 
     .deleteOne({
       _id: req.params.id,
@@ -204,7 +215,7 @@ exports.deleteImage = (req, res, next) => {
 
     .catch(error => {
       res.status(500).json({
-        message: 'Deleting image failed!',
+        message: 'Deleting house failed!',
         status: false
       });
     });

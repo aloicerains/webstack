@@ -1,13 +1,13 @@
-const Image = require('../models/image');
+const Unit = require('../models/unit');
 
-exports.getImages = (req, res, next) => {
+exports.getUnits = (req, res, next) => {
   const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
-  const imageQuery = Image.find();
-  let fetchedImages;
+  const unitQuery = Unit.find();
+  let fetchedUnits;
 
   if (pageSize && currentPage) {
-    imageQuery
+    unitQuery
       .sort({ createdAt: 1 })
 
       .skip(pageSize * (currentPage - 1))
@@ -15,34 +15,34 @@ exports.getImages = (req, res, next) => {
       .limit(pageSize);
   }
 
-  imageQuery
+  unitQuery
     .then(documents => {
-      fetchedImages = documents;
-      return Image.countDocuments();
+      fetchedUnits = documents;
+      return Unit.countDocuments();
     })
 
     .then(count => {
-      res.status(200).json(fetchedImages);
+      res.status(200).json(fetchedUnits);
     })
 
     .catch(error => {
       res.status(500).json({
-        message: 'Fetching image failed!',
+        message: 'Fetching unit failed!',
         status: false
       });
     });
 };
 
-exports.getImage = (req, res, next) => {
-  Image
+exports.getUnit = (req, res, next) => {
+  Unit
     .findById(req.params.id)
 
-    .then(image => {
-      if (image) {
-        res.status(200).json(image);
+    .then(unit => {
+      if (unit) {
+        res.status(200).json(unit);
       } else {
         res.status(404).json({
-          message: 'Image does not exist',
+          message: 'Unit does not exist',
           status: false
         });
       }
@@ -50,31 +50,31 @@ exports.getImage = (req, res, next) => {
 
     .catch(error => {
       res.status(500).json({
-        message: 'Fetching image failed!',
+        message: 'Fetching unit failed!',
         status: false
       });
     });
 };
 
-exports.getImagesByHouseId = (req, res, next) => {
+exports.getUnitsByHouseId = (req, res, next) => {
   const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
 
-  const imagesQuery = Image
+  const unitsQuery = Unit
     .aggregate()
 
     .lookup({
-      from: 'images',
+      from: 'units',
       localField: 'houseId',
       foreignField: '_id',
       as: 'houseDetails'
     })
     .match({ creator: new mongoose.Types.ObjectId(req.params.id) });;
 
-  let fetchedImages;
+  let fetchedUnits;
 
   if (pageSize && currentPage) {
-    imagesQuery
+    unitsQuery
       .sort({ createdAt: 1 })
 
       .skip(pageSize * (currentPage - 1))
@@ -82,77 +82,75 @@ exports.getImagesByHouseId = (req, res, next) => {
       .limit(pageSize);
   }
 
-  imagesQuery
+  unitsQuery
     .then(documents => {
-      fetchedImages = documents;
+      fetchedUnits = documents;
 
-      fetchedImages.map(fetchedImage => {
-        fetchedHouseDetails = fetchedImage.houseDetails[0]
+      fetchedUnits.map(fetchedUnit => {
+        fetchedHouseDetails = fetchedUnit.houseDetails[0]
       }
-        return fetchedImage
+        return fetchedUnit
       });
 
-      return Image.countDocuments();
+      return Unit.countDocuments();
     })
 
     .then(count => {
       res.status(200).json(
-        fetchedImages
+        fetchedUnits
       );
     })
 
     .catch(error => {
       console.log(error)
       res.status(500).json({
-        message: 'Fetching owner images failed!',
+        message: 'Fetching owner units failed!',
         status: false
       });
     });
 };
 
-exports.createImage = (req, res) => {
+exports.createUnit = (req, res) => {
   if (req.body === {}) {
     res.status(400).json({
       message: 'Bad request',
       status: false
     });
   }
-  const url = req.protocol + '://' + req.get('host');
-  const image = new Image({
+
+  const unit = new Unit({
     houseId: req.body.houseId,
-    imageDescription: req.body.imageDescription,
-    imageUrl: url + '/images/' + req.file.filename
+    unitDescription: req.body.unitDescription,
+    unitType: req.body.unitType,
+    isVacant: req.body.isVacant,
+    unitName: req.body.unitName,
+    unitPrice: req.body.unitPrice,
   });
 
 
-  image
+  unit
     .save()
 
-    .then(createdImage => {
+    .then(createdUnit => {
       res.status(201).json({
-        message: 'image added successfully',
+        message: 'unit added successfully',
         status: true
       });
     })
 
     .catch(error => {
       res.status(500).json({
-        message: 'creating an image failed!',
+        message: 'creating a unit failed!',
         status: false
       });
     });
 };
 
-exports.updateImage = (req, res, next) => {
+exports.updateUnit = (req, res, next) => {
   const updateData = req.body;
   updateData._id = req.params.id;
 
-  if (req.file) {
-    const url = req.protocol + '://' + req.get('host');
-    updateData.imageUrl = url + '/images/' + req.file.filename;
-  }
-
-  Image
+  Unit
     .updateOne(
       {
         _id: req.params.id,
@@ -176,14 +174,14 @@ exports.updateImage = (req, res, next) => {
 
     .catch(error => {
       res.status(500).json({
-        message: "Couldn't update image!",
+        message: "Couldn't update unit!",
         status: false
       });
     });
 };
 
-exports.deleteImage = (req, res, next) => {
-  Image
+exports.deleteUnit = (req, res, next) => {
+  Unit
 
     .deleteOne({
       _id: req.params.id,
@@ -204,7 +202,7 @@ exports.deleteImage = (req, res, next) => {
 
     .catch(error => {
       res.status(500).json({
-        message: 'Deleting image failed!',
+        message: 'Deleting unit failed!',
         status: false
       });
     });
