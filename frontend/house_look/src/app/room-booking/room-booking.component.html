@@ -1,0 +1,40 @@
+<mat-card >
+  <div class="flex" *ngIf="!isLoading">
+    Enquiry:
+    <mat-icon>phone</mat-icon>
+    <span mat-line>{{ userPhoneNumber }}</span>
+  </div>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form (submit)="onBooking(bookingForm)" #bookingForm="ngForm" *ngIf="!isLoading">
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        name="name"
+        ngModel
+        required
+        placeholder="Name"
+        minlength="3"
+        #name="ngModel">
+        <mat-error *ngIf="name.invalid">Please enter your name</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        type="number"
+        name="cellPhone"
+        placeholder="Mobile Number"
+        ngModel
+        required
+        #cellPhone="ngModel">
+      <mat-error *ngIf="cellPhone.invalid">Please enter your mobile phone number</mat-error>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit">
+      Book Now!
+    </button>
+  </form>
+</mat-card>
+

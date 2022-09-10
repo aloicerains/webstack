@@ -1,0 +1,91 @@
+  <mat-toolbar color="primary">
+    <mat-toolbar-row class="header-container">
+      <span>
+        HouseLook
+      </span>
+      <span>
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="false">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button
+           *ngIf="!userIsAuthenticated"
+           mat-menu-item routerLink="/log-in">
+            <mat-icon>login</mat-icon>
+            <span>Login</span>
+          </button>
+          <button
+          *ngIf="userIsAuthenticated"
+          mat-menu-item
+          (click)="onLogout()">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+          <button
+          *ngIf="!userIsAuthenticated"
+           mat-menu-item routerLink="/sign-up">
+            <mat-icon>person_add</mat-icon>
+            <span>Signup</span>
+          </button>
+        </mat-menu>
+      </span>
+    </mat-toolbar-row >
+    <mat-toolbar-row class="tool-bar-container2">
+      <div fxHide.gt-xs>
+        <button mat-icon-button (click)="onToggleSidenav()">
+            <mat-icon>menu</mat-icon>
+        </button>
+    </div>
+    <div fxHide.xs>
+      <a
+      mat-list-item
+      [routerLink]="['']">
+      <mat-icon>home</mat-icon>
+    </a>
+    </div>
+    <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
+        <ul fxLayout fxLayoutGap="15px" class="navigation-items">
+            <li>
+              <a
+              mat-list-item
+              [routerLink]="['']"
+              [queryParams]="{type: 'Single rooms'}">
+                Single rooms
+              </a>
+            </li>
+            <li>
+              <a
+              mat-list-item
+              [routerLink]="['']"
+              [queryParams]="{type: 'Bedsitters'}">
+                Bedsitters
+              </a>
+            </li>
+            <li>
+              <a
+              mat-list-item
+              [routerLink]="['']"
+              [queryParams]="{type: '1-bedroom'}">
+              1-Bedrooms
+            </a>
+            </li>
+            <li>
+              <a
+              mat-list-item
+              [routerLink]="['']"
+              [queryParams]="{type: '2-bedroom'}">
+               2-Bedrooms
+              </a>
+            </li>
+            <li>
+              <a
+               mat-list-item
+              [routerLink]="['']"
+              [queryParams]="{type: '3-bedroom'}">
+              3-Bedrooms
+             </a>
+            </li>
+        </ul>
+    </div>
+    </mat-toolbar-row>
+  </mat-toolbar>

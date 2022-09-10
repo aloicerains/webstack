@@ -1,0 +1,55 @@
+<mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form *ngIf="!isLoading" [formGroup]="form" (submit)="onSaveRoom()">
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        formControlName="name"
+        placeholder="Room name or number">
+        <mat-error *ngIf="form.get('name').invalid">Please enter room name</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Room type</mat-label>
+      <mat-select
+        formControlName="type">
+        <mat-option *ngFor="let type of roomTypes" [value]="type">
+          {{ type }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('type').invalid">Please select room type</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Vacancy</mat-label>
+      <mat-select
+        formControlName="vacancy">
+        <mat-option *ngFor="let option of ['true', 'false']" [value]="option">
+          {{ option }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('vacancy').invalid">Please select an option</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        type="number"
+        formControlName="floor"
+        placeholder="floor">
+      <mat-error *ngIf="form.get('floor').invalid">Please enter floor number</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        type="number"
+        formControlName="price"
+        placeholder="Enter room price">
+        <mat-error *ngIf="form.get('price').invalid">Please enter room price</mat-error>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit">
+      Save Room
+    </button>
+  </form>
+</mat-card>

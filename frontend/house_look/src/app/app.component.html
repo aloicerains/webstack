@@ -1,0 +1,25 @@
+
+<!--div>
+  <app-header></app-header>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+  <app-footer></app-footer>
+</div-->
+
+
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav role="navigation">
+      <app-header-sidenav (sidenavClose)="sidenav.close()"></app-header-sidenav>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div>
+        <app-header (sidenavToggle)="sidenav.toggle()"></app-header>
+      <main>
+        <router-outlet></router-outlet>
+      </main>
+      <app-footer></app-footer>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+

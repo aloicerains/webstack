@@ -1,0 +1,69 @@
+<mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading">
+    <mat-form-field>
+      <input
+        matInput
+        ngModel
+        name="name"
+        type="text"
+        placeholder="Name"
+        #nameInput="ngModel"
+        required>
+        <mat-error *ngIf="nameInput.invalid">Please enter your name.</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        ngModel
+        name="email"
+        type="email"
+        placeholder="E-mail"
+        #emailInput="ngModel"
+        required>
+        <mat-error *ngIf="emailInput.invalid">Please enter valid email.</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        ngModel
+        name="phoneNumber"
+        type="number"
+        placeholder="Phone Number"
+        #phoneNumber="ngModel"
+        required>
+        <mat-error *ngIf="phoneNumber.invalid">Please enter your phone number.</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>User type</mat-label>
+      <mat-select
+        ngModel
+        name="userType"
+        #userType="ngModel">
+        <mat-option *ngFor="let type of types" [value]="type">
+          {{ type }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="userType.invalid">Please select user type</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        ngModel
+        type="password"
+        name="password"
+        placeholder="Password"
+        #passwordInput="ngModel"
+        required>
+      <mat-error *ngIf="passwordInput.invalid">Please enter valid password.</mat-error>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      *ngIf="!isLoading">
+      Signup
+    </button>
+  </form>
+</mat-card>
+

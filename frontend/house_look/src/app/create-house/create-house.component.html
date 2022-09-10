@@ -1,0 +1,71 @@
+<mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form [formGroup]="form" (submit)="onSaveHouse()">
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        formControlName="name"
+        placeholder="House name">
+        <mat-error *ngIf="form.get('name').invalid">Please enter name</mat-error>
+    </mat-form-field>
+    <div>
+      <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
+      <input type="file" #filePicker (change)="onImagePicked($event)">
+    </div>
+    <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid">
+      <img [src]="imagePreview" [alt]="form.value.title">
+    </div>
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        formControlName="location"
+        placeholder="Location name">
+        <mat-error *ngIf="form.get('location').invalid">Please enter place</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        type="number"
+        formControlName="latitude"
+        placeholder="Latitude">
+      <mat-error *ngIf="form.get('latitude').invalid">Please enter Latitude in degrees</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        type="number"
+        formControlName="longitude"
+        placeholder="Longitude">
+      <mat-error *ngIf="form.get('longitude').invalid">Please enter Longitude in degrees</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea
+        matInput
+        type="text"
+        rows="5"
+        formControlName="description"
+        placeholder="Other details about the house">
+        </textarea>
+        <mat-error *ngIf="form.get('description').invalid">Please add any other details about the house</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Type of rooms</mat-label>
+      <mat-select multiple
+        formControlName="houseType">
+        <mat-option *ngFor="let type of houseTypes" [value]="type">
+          {{ type }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('houseType').invalid">Please select room type</mat-error>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit">
+      Save House
+    </button>
+  </form>
+</mat-card>
+

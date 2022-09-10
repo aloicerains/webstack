@@ -1,0 +1,48 @@
+.header-container {
+  display: flex;
+  justify-content: space-between;
+}
+mat-label {
+  font-size: small;
+}
+
+mat-list-item, a {
+  color: white !important;
+}
+
+.tool-bar-container2 {
+  background-color: rgb(240, 150, 150);
+  box-shadow: 2rem 2rem 6rem orange;
+}
+
+.subheader-container {
+  display: flex;
+  /*overflow: hidden;*/
+  justify-content:space-evenly;
+}
+
+mat-nav-list a {
+  font-size: small;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+  font-size: small;
+}
+a:hover, a:active{
+  color: lightgray;
+}
+.navigation-items{
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+mat-toolbar{
+  border-radius: 3px;
+}
+@media(max-width: 959px){
+  mat-toolbar{
+      border-radius: 0px;
+  }
+}

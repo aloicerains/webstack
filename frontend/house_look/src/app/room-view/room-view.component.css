@@ -1,0 +1,128 @@
+
+mat-expansion-panel-header {
+  background-color: rgb(30, 197, 197);
+  color: black;
+  font-weight: lighter;
+}
+
+.img {
+  width: 100%;
+}
+
+.room-view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.room-view-header span {
+  font-weight: lighter;
+  font-size: large;
+}
+.room-view-header a {
+  font-size: small;
+  font-weight: lighter;
+}
+.spacer {
+  flex: 1 1 auto;
+}
+
+.hide {
+  display: none;
+}
+
+.carousel-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 66vw;
+  margin: auto;
+  text-align: center;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px #dce1e1;
+}
+
+.carousel-container .container-header {
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-style: italic;
+  font-weight: bold;
+  color: #0400ff;
+}
+
+.carousel-container img {
+  display: none;
+  border-radius: 15px;
+}
+.carousel-container img.image-active {
+  display: block;
+  width: 100%;
+  height: 400px;
+}
+
+.carousel-dot-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
+.dot {
+  cursor: pointer;
+  height: 13px;
+  width: 13px;
+  margin: 5px 5px;
+  background-color: rgb(40, 11, 206);
+  border-radius: 50%;
+  display: inline-block;
+  transition: opacity 0.6s ease;
+  opacity: 0.5;
+}
+
+.delete-button{
+  align-self: flex-end;
+  margin: auto;
+}
+.delete-button mat-icon {
+  outline: 0;
+  color:red;;
+}
+
+.active,
+.dot:hover {
+  opacity: 1;
+}
+
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+table {
+  width: 100%;
+}
+
+mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.general-info {
+  display: flex;
+  justify-content: centre;
+  align-items: centre;
+  margin: 2rem;
+  font-size: small;
+  background-color: antiquewhite;
+}

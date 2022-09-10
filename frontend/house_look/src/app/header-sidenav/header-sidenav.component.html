@@ -1,0 +1,43 @@
+<mat-nav-list>
+        <a
+        mat-list-item
+        [routerLink]="['']"
+        (click)="onSidenavClose()">
+        <mat-icon>home</mat-icon>
+      </a>
+        <a
+        mat-list-item
+        [routerLink]="['']"
+        [queryParams]="{type: 'Single rooms'}"
+        (click)="onSidenavClose()">
+          Single rooms
+        </a>
+        <a
+        mat-list-item
+        [routerLink]="['']"
+        [queryParams]="{type: 'Bedsitters'}"
+        (click)="onSidenavClose()">
+          Bedsitters
+        </a>
+        <a
+        mat-list-item
+        [routerLink]="['']"
+        [queryParams]="{type: '1-bedroom'}"
+        (click)="onSidenavClose()">
+          1-Bedrooms
+        </a>
+        <a
+        mat-list-item
+        [routerLink]="['']"
+        [queryParams]="{type: '2-bedroom'}"
+        (click)="onSidenavClose()">
+          2-Bedrooms
+        </a>
+        <a
+        mat-list-item
+        [routerLink]="['']"
+        [queryParams]="{type: '3-bedroom'}"
+        (click)="onSidenavClose()">
+          3-Bedrooms
+        </a>
+      </mat-nav-list>
