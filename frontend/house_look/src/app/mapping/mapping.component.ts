@@ -33,7 +33,7 @@ export class MappingComponent implements OnInit {
     })
 
     let loader = new Loader({
-      apiKey: 'AIzaSyAFzlQVIg2QuAOg7pwOIgmGOX29TZgBXGM'
+      apiKey: ''
     });
     loader.load().then(() => {
       console.log('map loaded');
