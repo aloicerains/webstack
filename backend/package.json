@@ -4,13 +4,14 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start:server": "nodemon ./server.js",
+    "start-server": "nodemon ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Jilks Smith <smithjilks@gmail.com>",
+  "author": "Aloice Okoth <aloiceokoth98@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "body-parser": "^1.20.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "jsonwebtoken": "^8.5.1",
